@@ -1,11 +1,18 @@
 
 
+import org.apache.log4j.Logger;
+
 import com.hof.mi.interfaces.AnalyticalFunction;
 import com.hof.mi.interfaces.UserInputParameters;
 
 public class YellowfinRRoll extends AnalyticalFunction {
 
-	
+	private Boolean booted = false;
+	private Object[] result = null;
+	private Logger log = Logger.getLogger(YellowfinRRoll.class);
+	/**
+	 * This function accepts numbers, text, dates, times, timestamp and boolean values
+	 */
 	@Override
 	public boolean acceptsNativeType(int i) {
 		return (i==TYPE_NUMERIC
@@ -17,8 +24,39 @@ public class YellowfinRRoll extends AnalyticalFunction {
 	}
 
 	@Override
-	public Object applyAnalyticFunction(int arg0, Object arg1) throws Exception {
-		return -1.0;
+	public Object applyAnalyticFunction(int j, Object val) throws Exception {
+		
+		// 1. Go through the parameters and set them up in a data structure
+		// 2. Invoke
+		String filepath = (String) getParameterValue("filename");
+		synchronized(booted) {
+			if(!booted) {
+				Object[] parameter0 = (Object[]) getParameterValue("parameter0");
+				Object[] parameter1 = (Object[]) getParameterValue("parameter1");
+				Object[] parameter2 = (Object[]) getParameterValue("parameter2");
+				Object[] parameter3 = (Object[]) getParameterValue("parameter3");
+				Object[] parameter4 = (Object[]) getParameterValue("parameter4");
+				
+
+				RenjinCaller rj = RenjinCaller.create(filepath);
+				result = rj
+						.addColumn("parameter0",parameter0)
+						.addColumn("parameter1",parameter1)
+						.addColumn("parameter2", parameter2)
+						.addColumn("parameter3", parameter3)
+						.addColumn("parameter4", parameter4)
+						.result();
+
+				if(rj.hasError() || result==null) {
+					log.error("Failure in R Script Invocation 'YellowfinRRoll:applyAnalyticsFunction'");
+					throw new Exception("Failure in R Script Invocation: " 
+				                                     + rj.errorMessage());
+				}
+				booted = true;
+			}
+			return result[j];
+		}
+
 	}
 
 	@Override
@@ -28,7 +66,7 @@ public class YellowfinRRoll extends AnalyticalFunction {
 
 	@Override
 	public String getColumnHeading(String arg0) {
-		return "I don't know what this does";
+		return "R-script Result";
 	}
 
 	@Override

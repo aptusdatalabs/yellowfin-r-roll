@@ -1,2 +1,2 @@
-yf_dataset$result <- lapply(yf_dataset$parameter0,as.character);
+yf_dataset$result <- yf_dataset$parameter0;
 
