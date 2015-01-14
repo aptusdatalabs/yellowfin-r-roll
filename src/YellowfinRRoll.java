@@ -1,17 +1,50 @@
-
+/**
+ * This is part of the R integration for business intelligence tooling developed by
+ * <a href="www.blacklightsolutions.com">Blacklight Solutions, LLC</a>, a data analytics 
+ * that focuses on creating new opportunities by bringing advanced analytics into organizations.
+ * 
+ * This is the primary class for the Yellowfin interface of the R integration.  
+ * <a href="www.yellowfinbi.com">Yellowfin</a> is a web-based business intelligence tool 
+ * focusing on ad-hoc report and dashboard development, as well as collaboration and mobile access.
+ * 
+ *      
+ * This class handles implementing the Yellowfin Advanced Function interface as specified by the 
+ * Yellowfin API, as well as setting up the parameters and invoking the R engine class.  
+ * 
+ * In order to compile and run these classes one will also need the renjin libraries 
+ * referenced (available at http://www.renjin.org/ along with instructions for download and setup) 
+ * as well as the 
+ * 
+ * @author Chance Coble
+ */
 
 import org.apache.log4j.Logger;
-
 import com.hof.mi.interfaces.AnalyticalFunction;
 import com.hof.mi.interfaces.UserInputParameters;
 
+
 public class YellowfinRRoll extends AnalyticalFunction {
 
+	/** Indicator for whether or not this instance has been run - depends on 'instantiate once 
+	 * per report' lifecycle.
+	 */
 	private Boolean booted = false;
+	
+	/** 
+	 * The results of the R script will be stored here.
+	 */
 	private Object[] result = null;
+	
+	/** The logger object for Yellowfin log files.
+	 * 
+	 */
 	private Logger log = Logger.getLogger(YellowfinRRoll.class);
+	
 	/**
 	 * This function accepts numbers, text, dates, times, timestamp and boolean values
+	 * 
+	 * @param i	The type in question, as encoded through an enumeration in Yellowfin's library.
+	 * @return Whether or not it accepts the given type identifier.
 	 */
 	@Override
 	public boolean acceptsNativeType(int i) {
@@ -23,6 +56,16 @@ public class YellowfinRRoll extends AnalyticalFunction {
 				|| i==TYPE_BOOLEAN);	
 	}
 
+	/**
+	 * This function is part of the analytical function interface from the Yellowfin API.
+	 * This function works in an unusual way, but going through the entire dataset first, 
+	 * iterating over each field to build a set of ordered arrays of those values.  Then 
+	 * the R engine is invoked with the given script on them.  The result is stored in this 
+	 * class as the result field (which is an Object array).
+	 * 
+	 * @param j 	The location (row) in the recordset as a zero-offset integer index
+	 * @param val 	The value from the field on which this function is being applied.
+	 */
 	@Override
 	public Object applyAnalyticFunction(int j, Object val) throws Exception {
 		
@@ -86,6 +129,14 @@ public class YellowfinRRoll extends AnalyticalFunction {
 		return AnalyticalFunction.TYPE_UNKNOWN; // unknown, base it on the same type that the selected column is.
 	}
 	
+	/**
+	 * This method sets up the parameters for the Yellowfin interface to use to collect
+	 * labels, information and references to other fields.  For this approach there is one 
+	 * field that collects the path of the R script (filename) and 5 others that can be used
+	 * to refer to other fields in the Yellowfin table so they can be passed into the R script 
+	 * as parameters.
+	 * 
+	 */
 	protected void setupParameters() {
 	
 		
