@@ -4,6 +4,22 @@ import org.renjin.sexp.ListVector;
 import org.renjin.sexp.Vector;
 import java.util.*;
 
+/**
+ * This is part of the R integration for business intelligence tooling developed by
+ * <a href="www.blacklightsolutions.com">Blacklight Solutions, LLC</a>, a data analytics 
+ * that focuses on creating new opportunities by bringing advanced analytics into organizations.
+ *      
+ * This class handles calling directly on the Renjin API to invoke R once populated by the 
+ * calling object.  
+ * 
+ * In order to compile and run these classes one will also need the renjin libraries 
+ * referenced (available at http://www.renjin.org/ along with instructions for download and setup) 
+ * as well as the Yellowfin i4-core.jar and i4-mi.jar 
+ * (from the Yellowfin Install Directory/appserver/webapps/ROOT/WEB-INF/lib) 
+ * and the Apache Log4j libraries.
+ * 
+ * @author Chance Coble
+ */
 public class RenjinCaller {
 
 	Map<String,Object[]> params = new HashMap<String,Object[]>();

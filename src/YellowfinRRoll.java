@@ -1,3 +1,9 @@
+
+
+import org.apache.log4j.Logger;
+import com.hof.mi.interfaces.AnalyticalFunction;
+import com.hof.mi.interfaces.UserInputParameters;
+
 /**
  * This is part of the R integration for business intelligence tooling developed by
  * <a href="www.blacklightsolutions.com">Blacklight Solutions, LLC</a>, a data analytics 
@@ -13,16 +19,12 @@
  * 
  * In order to compile and run these classes one will also need the renjin libraries 
  * referenced (available at http://www.renjin.org/ along with instructions for download and setup) 
- * as well as the 
+ * as well as the Yellowfin i4-core.jar and i4-mi.jar 
+ * (from the Yellowfin Install Directory/appserver/webapps/ROOT/WEB-INF/lib) 
+ * and the Apache Log4j libraries.
  * 
  * @author Chance Coble
  */
-
-import org.apache.log4j.Logger;
-import com.hof.mi.interfaces.AnalyticalFunction;
-import com.hof.mi.interfaces.UserInputParameters;
-
-
 public class YellowfinRRoll extends AnalyticalFunction {
 
 	/** Indicator for whether or not this instance has been run - depends on 'instantiate once 
