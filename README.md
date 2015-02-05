@@ -5,7 +5,7 @@ This project is an advanced function integration into Yellowfin's (www.yellowfin
 
 Not that the slower the R-script is, the slower the report will be to generate.   
 
-To build this project you will need to include the libraries provided in the /deps folder in your build path.   
+To build this project you will need to include the libraries provided in the /deps folder in your build path.  You can also get these online through the www.renjin.org project, as well as the log4j repository. 
 You will also need to reference the two jar files below in your Yellowfin web application library : 
 [Yellowfin Install Directory ]/appserver/webapps/ROOT/WEB-INF/lib
    - i4-core.jar
