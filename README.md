@@ -1,7 +1,13 @@
 # yellowfin-r-roll
 An advanced analytics function for Yellowfin to incorporate R scripts into report generation
 
-This project is an advanced function integration into Yellowfin's (www.yellowfinbi.com) report development interface so that R scripts can be called on.  Prior to applying this function to a dataset in Yellowfin you will need the R-script in a location on your Yellowfin application server.  The script may assume that a dataframe (which will be populated by the integrated function) contains a dataframe called <code>yf_dataset</code>.  That dataframe can have up to 5 fields (<code>parameter0, parameter1, ...,parameter4</code>) which represent the 5 features for each record that the model can be applied to.  The assumption is that the model is applied to each of the feature sets and yields a value.  That value can be written then as a list to <code>yf_dataset$result</code>.  <code>yf_dataset$result</code> is the value that will appear in the resulting column in the Yellowfin report.   <u><i>If your R script uses CRAN packages, you will need to follow the instructions on www.renjin.org for integrating those CRAN packages into your local environment.</i></u>
+This project is an advanced function integration into Yellowfin's (www.yellowfinbi.com) report development interface so that R scripts can be called on.  Prior to applying this function to a dataset in Yellowfin you will need the R-script in a location on your Yellowfin application server.  The parameter to populate the location of the R script should be filled with an absolute <u>filesystem</u> path, such as <code>/Users/joe/model.r</code>, where Yellowfin has the authority to read the script in that path. 
+
+The script may assume that a dataframe (which will be populated by the integrated function) contains a dataframe called <code>yf_dataset</code>.  That dataframe can have up to 5 fields (<code>parameter0, parameter1, ...,parameter4</code>) which represent the 5 features for each record that the model can be applied to.  The assumption is that the model is applied to each of the feature sets and yields a value.  That value can be written then as a list to <code>yf_dataset$result</code>. 
+
+In Yellowfin <i>all 5 parameters must point to a column in the dataset</i>.  Any unused parameters will simply be ignored. The reason for this is that there is no way currently to have a parameter that points to a column set to empty. This is being discussed with the Yellowfin team and may be updated in the future.
+
+<code>yf_dataset$result</code> is the value that will appear in the resulting column in the Yellowfin report.   <u><i>If your R script uses CRAN packages, you will need to follow the instructions on www.renjin.org for integrating those CRAN packages into your local environment.</i></u>
 
 <b>Not that the slower the R-script is, the slower the report will be to generate. </b>
 
